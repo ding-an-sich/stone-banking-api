@@ -9,3 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+StoneBankingAPI.Repo.insert!(%StoneBankingAPI.Profiles.Schemas.User{
+  name: "Joe Armstrong",
+  email: "joe@erlang.com"
+})
