@@ -9,7 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-StoneBankingAPI.Repo.insert!(%StoneBankingAPI.Profiles.Schemas.User{
+alias StoneBankingAPI.Profiles.Schemas.User
+
+StoneBankingAPI.Repo.delete_all(User)
+
+StoneBankingAPI.Repo.insert!(%User{
   name: "Joe Armstrong",
   email: "joe@erlang.com"
 })
