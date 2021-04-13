@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :stone_banking_api, StoneBankingAPI.Repo,
