@@ -11,11 +11,17 @@ defmodule StoneBankingAPIWeb.WithdrawnController do
       |> put_status(:ok)
       |> render("update.json", account: account)
     else
-      {:error, message} ->
+      {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_status(:bad_request)
         |> put_view(StoneBankingAPIWeb.ErrorView)
-        |> render("400.json", message: message)
+        |> render("400.json", changeset: changeset)
+
+      {:error, :not_found} ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(StoneBankingAPIWeb.ErrorView)
+        |> render("404.json")
     end
   end
 end
