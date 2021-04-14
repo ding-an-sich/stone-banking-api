@@ -15,3 +15,4 @@ alias StoneBankingAPI.Profiles.Schemas.User
 StoneBankingAPI.Repo.delete_all(User)
 
 Users.create(%{name: "Joe Armstrong", email: "joe@erlang.com"})
+Users.create(%{name: "Vini", email: "vini@gmail.com"})
