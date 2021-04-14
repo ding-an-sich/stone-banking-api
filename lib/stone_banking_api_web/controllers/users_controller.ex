@@ -15,10 +15,10 @@ defmodule StoneBankingAPIWeb.UsersController do
     |> render("create.json", user: user)
   end
 
-  defp handle_response({:error, message}, conn) do
+  defp handle_response({:error, %Ecto.Changeset{} = changeset}, conn) do
     conn
     |> put_status(:bad_request)
     |> put_view(StoneBankingAPIWeb.ErrorView)
-    |> render("400.json", message: message)
+    |> render("400.json", changeset: changeset)
   end
 end

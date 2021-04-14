@@ -1,6 +1,7 @@
 defmodule StoneBankingAPIWeb.ErrorView do
   use StoneBankingAPIWeb, :view
 
+  alias Ecto.Changeset
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.
   # def render("500.json", _assigns) do
@@ -12,5 +13,13 @@ defmodule StoneBankingAPIWeb.ErrorView do
   # "Not Found".
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
+  end
+
+  def render("400.json", %{changeset: changeset}) do
+    translate_errors(changeset)
+  end
+
+  defp translate_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
   end
 end
