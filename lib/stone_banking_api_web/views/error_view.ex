@@ -1,7 +1,6 @@
 defmodule StoneBankingAPIWeb.ErrorView do
   use StoneBankingAPIWeb, :view
 
-  alias Ecto.Changeset
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.
   # def render("500.json", _assigns) do
@@ -16,7 +15,7 @@ defmodule StoneBankingAPIWeb.ErrorView do
   end
 
   def render("400.json", %{changeset: changeset}) do
-    translate_errors(changeset)
+    %{errors: translate_errors(changeset)}
   end
 
   defp translate_errors(changeset) do
