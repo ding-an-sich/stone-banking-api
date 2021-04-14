@@ -5,6 +5,7 @@ defmodule StoneBankingAPI.Accounts.BankingAccounts do
   alias Ecto.Multi
   alias StoneBankingAPI.Repo
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Notify.Email
   alias StoneBankingAPI.Inputs.Withdrawn
 
   def withdrawn(%Withdrawn{account_id: id, value: value}) do
@@ -38,6 +39,7 @@ defmodule StoneBankingAPI.Accounts.BankingAccounts do
   end
 
   defp handle_multi({:ok, %{do_withdrawn: account}}) do
+    Email.notify_withdrawal(account)
     {:ok, account}
   end
 end
