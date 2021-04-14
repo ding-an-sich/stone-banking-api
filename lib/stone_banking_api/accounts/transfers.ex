@@ -7,6 +7,8 @@ defmodule StoneBankingAPI.Accounts.Transfers do
   alias StoneBankingAPI.Inputs.BankingTransfer
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
 
+  @spec banking_transfer(BankingTransfer.t()) ::
+          {:ok, BankingAccount.t(), BankingAccount.t()} | {:error, Ecto.Changeset.t()}
   def banking_transfer(%BankingTransfer{from_id: from_id, to_id: to_id, value: value}) do
     Multi.new()
     |> Multi.run(:get_from_account, fn repo, _changes ->
