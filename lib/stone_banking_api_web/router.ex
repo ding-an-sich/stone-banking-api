@@ -11,5 +11,7 @@ defmodule StoneBankingAPIWeb.Router do
     post "/users", UsersController, :create
 
     post "/accounts/withdrawn", WithdrawnController, :update
+
+    post "/accounts/transfer", AccountsTransferController, :create
   end
 end
