@@ -1,4 +1,4 @@
-defmodule StoneBankingAPI.Accounts.Schemas.Account do
+defmodule StoneBankingAPI.Accounts.Schemas.BankingAccount do
   @moduledoc """
   An user's bank account.
   """
@@ -20,8 +20,8 @@ defmodule StoneBankingAPI.Accounts.Schemas.Account do
     timestamps()
   end
 
-  def changeset(params) do
-    %__MODULE__{}
+  def changeset(struct \\ %__MODULE__{}, params) do
+    struct
     |> cast(params, @required_fields)
     |> validate_required(@required_fields)
     |> validate_number(:balance, greater_than_or_equal_to: 0)

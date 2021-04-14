@@ -9,5 +9,7 @@ defmodule StoneBankingAPIWeb.Router do
     pipe_through :api
 
     post "/users", UsersController, :create
+
+    post "/accounts/withdrawn", WithdrawnController, :update
   end
 end
