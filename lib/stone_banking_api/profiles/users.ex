@@ -5,7 +5,7 @@ defmodule StoneBankingAPI.Profiles.Users do
   alias Ecto.Multi
   alias StoneBankingAPI.Repo
   alias StoneBankingAPI.Profiles.Schemas.User
-  alias StoneBankingAPI.Accounts.Schemas.Account
+  alias StoneBankingAPI.Accounts.Schemas.BankingAccount
 
   @doc """
   Creates an user and his bank account with R$1000.
@@ -16,7 +16,7 @@ defmodule StoneBankingAPI.Profiles.Users do
     Multi.new()
     |> Multi.insert(:create_user, User.changeset(params))
     |> Multi.run(:create_account, fn repo, %{create_user: user} ->
-      Account.changeset(%{user_id: user.id})
+      BankingAccount.changeset(%{user_id: user.id})
       |> repo.insert
     end)
     |> Repo.transaction()
