@@ -2,6 +2,7 @@ defmodule StoneBankingAPI.Accounts.Transfers do
   @moduledoc """
   Functions for defining and executing transfers between accounts
   """
+  import Ecto.Query
   alias Ecto.Multi
   alias StoneBankingAPI.Repo
   alias StoneBankingAPI.Inputs.BankingTransfer
@@ -28,7 +29,9 @@ defmodule StoneBankingAPI.Accounts.Transfers do
   end
 
   defp get_account(repo, id) do
-    case repo.get(BankingAccount, id) do
+    query = from a in BankingAccount, where: a.id == ^id, lock: "FOR UPDATE"
+
+    case repo.one(query) do
       nil -> {:error, :not_found}
       account -> {:ok, account}
     end
