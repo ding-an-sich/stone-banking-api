@@ -7,5 +7,7 @@ defmodule StoneBankingAPIWeb.Router do
 
   scope "/api", StoneBankingAPIWeb do
     pipe_through :api
+
+    post "/users", UsersController, :create
   end
 end

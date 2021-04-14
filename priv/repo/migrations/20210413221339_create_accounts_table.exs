@@ -7,6 +7,8 @@ defmodule StoneBankingAPI.Repo.Migrations.CreateAccountsTable do
       add :balance, :integer, default: 100000
 
       add :user_id, references(:users, type: :uuid, on_delete: :delete_all)
+
+      timestamps()
     end
 
     create constraint(:accounts, :balance_must_be_0_or_more, check: "balance >= 0")
