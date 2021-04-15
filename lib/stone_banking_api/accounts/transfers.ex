@@ -16,13 +16,13 @@ defmodule StoneBankingAPI.Accounts.Transfers do
       get_account(repo, from_id)
     end)
     |> Multi.run(:do_withdrawn, fn repo, %{get_from_account: from_account} ->
-      do_withdrawn(repo, from_account, value)
+      do_operation(repo, from_account, value, :withdrawn)
     end)
     |> Multi.run(:get_to_account, fn repo, _changes ->
       get_account(repo, to_id)
     end)
     |> Multi.run(:do_deposit, fn repo, %{get_to_account: to_account} ->
-      do_deposit(repo, to_account, value)
+      do_operation(repo, to_account, value, :deposit)
     end)
     |> Repo.transaction()
     |> handle_multi()
@@ -37,18 +37,14 @@ defmodule StoneBankingAPI.Accounts.Transfers do
     end
   end
 
-  defp do_withdrawn(repo, account, value) do
-    params = %{balance: account.balance - value}
+  defp do_operation(repo, account, value, type) do
+    case type do
+      :withdrawn ->
+        BankingAccount.changeset(account, %{balance: account.balance - value}) |> repo.update()
 
-    BankingAccount.changeset(account, params)
-    |> repo.update()
-  end
-
-  defp do_deposit(repo, account, value) do
-    params = %{balance: account.balance + value}
-
-    BankingAccount.changeset(account, params)
-    |> repo.update()
+      :deposit ->
+        BankingAccount.changeset(account, %{balance: account.balance + value}) |> repo.update()
+    end
   end
 
   defp handle_multi({:error, _failed_operation, changeset, _changes_so_far}) do
