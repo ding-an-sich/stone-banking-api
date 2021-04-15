@@ -6,7 +6,7 @@ defmodule StoneBankingAPIWeb.AccountsController do
   alias StoneBankingAPI.Accounts.Transfers
   alias StoneBankingAPI.Accounts.BankingAccounts
 
-  def transfer(conn, params) do
+  def update(conn, %{account_id: _, value: _} = params) do
     with {:ok, %BankingTransfer{} = input} <-
            InputValidation.cast_and_apply(params, BankingTransfer),
          {:ok, from_account, to_account} <- Transfers.banking_transfer(input) do
@@ -28,7 +28,7 @@ defmodule StoneBankingAPIWeb.AccountsController do
     end
   end
 
-  def update(conn, params) do
+  def update(conn, %{from_id: _, to_id: _, value: _} = params) do
     with {:ok, %Withdrawn{} = input} <- InputValidation.cast_and_apply(params, Withdrawn),
          {:ok, account} <- BankingAccounts.withdrawn(input) do
       conn
