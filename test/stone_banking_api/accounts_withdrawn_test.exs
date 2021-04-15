@@ -25,10 +25,8 @@ defmodule StoneBankingAPI.AccountsWithdrawnTest do
     end
 
     test "will not allow overwithdrawals", ctx do
-      assert {:error, changeset} =
+      assert {:error, :balance_must_be_positive} =
                BankingAccounts.withdrawn(%Withdrawn{account_id: ctx.account_id, value: 200_000})
-
-      assert %{balance: ["must be greater than or equal to 0"]} == errors_on(changeset)
     end
   end
 end
