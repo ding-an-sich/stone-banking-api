@@ -67,7 +67,7 @@ defmodule StoneBankingAPIWeb.AccountsController do
     }
   end
 
-  swagger_path :update do
+  swagger_path :transfer do
     post("/api/accounts/transfer")
     summary("Transfers money between two accounts")
     consumes("application/json")
@@ -93,10 +93,7 @@ defmodule StoneBankingAPIWeb.AccountsController do
     response(404, "Not found")
   end
 
-  def update(
-        %Plug.Conn{path_info: ["api", "accounts", "transfer"]} = conn,
-        %{"from_id" => _, "to_id" => _, "value" => _} = params
-      ) do
+  def transfer(conn, params) do
     with {:ok, %BankingTransfer{} = input} <-
            InputValidation.cast_and_apply(params, BankingTransfer),
          {:ok, from_account, to_account} <- Transfers.banking_transfer(input) do
@@ -106,10 +103,7 @@ defmodule StoneBankingAPIWeb.AccountsController do
     end
   end
 
-  def update(
-        %Plug.Conn{path_info: ["api", "accounts", "withdrawn"]} = conn,
-        %{"account_id" => _, "value" => _} = params
-      ) do
+  def withdraw(conn, params) do
     with {:ok, %Withdrawn{} = input} <- InputValidation.cast_and_apply(params, Withdrawn),
          {:ok, account} <- BankingAccounts.withdrawn(input) do
       conn
