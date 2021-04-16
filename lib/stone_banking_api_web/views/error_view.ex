@@ -18,6 +18,10 @@ defmodule StoneBankingAPIWeb.ErrorView do
     %{errors: translate_errors(changeset)}
   end
 
+  def render("400.json", %{type: type}) do
+    %{errors: %{detail: Atom.to_string(type)}}
+  end
+
   defp translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
   end

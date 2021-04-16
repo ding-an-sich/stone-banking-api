@@ -8,6 +8,7 @@ defmodule StoneBankingAPI.AccountsTransferTest do
   alias StoneBankingAPI.Profiles.Users
   alias StoneBankingAPI.Inputs.BankingTransfer
 
+  # Accounts are created automatically with users, so we setup two here.
   setup do
     {:ok, _} = Users.create(%{name: "Joe", email: "joe@erlang.com"})
     {:ok, _} = Users.create(%{name: "Wittgenstein", email: "sheffer@stroke.com"})
