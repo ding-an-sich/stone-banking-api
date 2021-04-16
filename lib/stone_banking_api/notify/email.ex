@@ -10,6 +10,10 @@ defmodule StoneBankingAPI.Notify.Email do
       account
       |> Repo.preload(:user)
 
-    Logger.info("Notifying #{user.email} of account withdrawal")
+    if Mix.env() == :test do
+      Logger.warn("Notifying #{user.email} of account withdrawal")
+    else
+      Logger.info("Notifying #{user.email} of account withdrawal")
+    end
   end
 end

@@ -52,6 +52,7 @@ defmodule StoneBankingAPIWeb.AccountsControllerTest do
              }
     end
 
+    @tag capture_log: true
     test "responds with 200 when withdrawing from an existing account",
          %{accounts: [account]} = ctx do
       input = %{"account_id" => account.id, "value" => "50000"}
