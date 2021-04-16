@@ -16,6 +16,7 @@ defmodule StoneBankingAPIWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -32,10 +33,10 @@ defmodule StoneBankingAPIWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(StoneBankingAPI.Repo)
+    :ok = Sandbox.checkout(StoneBankingAPI.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(StoneBankingAPI.Repo, {:shared, self()})
+      Sandbox.mode(StoneBankingAPI.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

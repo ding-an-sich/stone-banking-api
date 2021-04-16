@@ -3,13 +3,13 @@ defmodule StoneBankingAPI.Profiles.Users do
   Module for handling users database queries
   """
   alias Ecto.Multi
-  alias StoneBankingAPI.Repo
-  alias StoneBankingAPI.Profiles.Schemas.User
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Profiles.Schemas.User
+  alias StoneBankingAPI.Repo
 
   @doc """
   Creates an user and his bank account with R$1000.
-  Returns an user if succesfull or a changeset if the operation fails.
+  Returns an user if succesful or a changeset if the operation fails.
   """
   @spec create(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def create(params) do

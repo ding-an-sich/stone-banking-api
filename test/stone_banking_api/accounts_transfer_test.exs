@@ -3,10 +3,11 @@ defmodule StoneBankingAPI.AccountsTransferTest do
   Tests for a transfer between accounts
   """
   use StoneBankingAPI.DataCase, async: true
+
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
   alias StoneBankingAPI.Accounts.Transfers
-  alias StoneBankingAPI.Profiles.Users
   alias StoneBankingAPI.Inputs.BankingTransfer
+  alias StoneBankingAPI.Profiles.Users
 
   # Accounts are created automatically with users, so we setup two here.
   setup do

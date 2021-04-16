@@ -4,10 +4,10 @@ defmodule StoneBankingAPI.AccountsWithdrawnTest do
   """
   use StoneBankingAPI.DataCase, async: true
 
-  alias StoneBankingAPI.Profiles.Users
   alias StoneBankingAPI.Accounts.BankingAccounts
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
   alias StoneBankingAPI.Inputs.Withdrawn
+  alias StoneBankingAPI.Profiles.Users
 
   import ExUnit.CaptureLog
 

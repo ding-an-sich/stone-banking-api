@@ -1,19 +1,33 @@
 # StoneBankingAPI
 
-To start your Phoenix server:
+## Description
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server`
+A simple banking API for STONKS 'Programa de Formação Elixir'.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Running the server in 3 steps
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+1 -  Start the PostgreSQL container with 
+```sh
+docker-compose up
+```
 
-## Learn more
+2 - Configure the application with
+```sh
+mix setup
+```
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+3 - Finally, start the server with
+```sh
+mix phx.server
+```
+## Testing
+
+Run 
+```sh
+mix test
+```
+in your terminal
+
+## Documentation
+
+- TODO
