@@ -3,10 +3,11 @@ defmodule StoneBankingAPI.Accounts.Transfers do
   Functions for defining and executing transfers between accounts
   """
   import Ecto.Query
+
   alias Ecto.Multi
-  alias StoneBankingAPI.Repo
-  alias StoneBankingAPI.Inputs.BankingTransfer
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Inputs.BankingTransfer
+  alias StoneBankingAPI.Repo
 
   @spec banking_transfer(BankingTransfer.t()) ::
           {:ok, BankingAccount.t(), BankingAccount.t()} | {:error, Ecto.Changeset.t()}

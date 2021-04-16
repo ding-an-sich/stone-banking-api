@@ -3,11 +3,12 @@ defmodule StoneBankingAPI.Accounts.BankingAccounts do
   Database queries for handling the update of banking accounts.
   """
   import Ecto.Query, only: [from: 2]
+
   alias Ecto.Multi
-  alias StoneBankingAPI.Repo
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
-  alias StoneBankingAPI.Notify.Email
   alias StoneBankingAPI.Inputs.Withdrawn
+  alias StoneBankingAPI.Notify.Email
+  alias StoneBankingAPI.Repo
 
   def withdrawn(%Withdrawn{account_id: id, value: value}) do
     Multi.new()

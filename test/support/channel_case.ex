@@ -16,6 +16,7 @@ defmodule StoneBankingAPIWeb.ChannelCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -29,10 +30,10 @@ defmodule StoneBankingAPIWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(StoneBankingAPI.Repo)
+    :ok = Sandbox.checkout(StoneBankingAPI.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(StoneBankingAPI.Repo, {:shared, self()})
+      Sandbox.mode(StoneBankingAPI.Repo, {:shared, self()})
     end
 
     :ok

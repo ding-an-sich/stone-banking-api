@@ -1,4 +1,7 @@
 defmodule StoneBankingAPIWeb.Telemetry do
+  @moduledoc """
+  Modules should have a @moduledoc tag.
+  """
   use Supervisor
   import Telemetry.Metrics
 
