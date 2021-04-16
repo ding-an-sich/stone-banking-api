@@ -2,7 +2,7 @@
 
 ## Description
 
-A simple banking API for 'Programa de Formação Elixir'.
+A simple banking API for STONKS 'Programa de Formação Elixir'.
 
 ## Running the server in 3 steps
 
