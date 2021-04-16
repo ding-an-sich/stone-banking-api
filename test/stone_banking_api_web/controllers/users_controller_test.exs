@@ -26,7 +26,7 @@ defmodule StoneBankingAPIWeb.UsersControllerTest do
       input = %{"name" => "Joe", "email" => "jor@erlang.com"}
 
       resp = ctx.conn |> post("/api/users", input) |> json_response(201)
-      assert %{"action" => "User created"} = resp
+      assert %{"action" => "User creaed"} = resp
     end
   end
 end
