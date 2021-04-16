@@ -20,6 +20,12 @@ config :stone_banking_api, StoneBankingAPIWeb.Endpoint,
   pubsub_server: StoneBankingAPI.PubSub,
   live_view: [signing_salt: "itEMxI31"]
 
+# Swagger configuration
+config :stone_banking_api, :phoenix_swagger,
+  swagger_files: %{
+    "priv/static/swagger.json" => [router: StoneBankingAPIWeb.Router]
+  }
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -27,6 +33,7 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+config :phoenix_swagger, json_library: Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

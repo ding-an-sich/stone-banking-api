@@ -29,5 +29,5 @@ mix test
 in your terminal
 
 ## Documentation
-
-- TODO
+### Swagger docs (incomplete)
+Start the server and point your browser to `localhost:4000/api/swagger`

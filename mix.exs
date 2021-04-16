@@ -7,7 +7,7 @@ defmodule StoneBankingAPI.MixProject do
       version: "0.1.0",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix] ++ Mix.compilers(),
+      compilers: [:phoenix] ++ Mix.compilers() ++ [:phoenix_swagger],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -41,6 +41,9 @@ defmodule StoneBankingAPI.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:phoenix_swagger, "~> 0.8"},
+      {:poison, "~> 2.2 or ~> 3.0"},
+      {:ex_json_schema, "~> 0.5"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
