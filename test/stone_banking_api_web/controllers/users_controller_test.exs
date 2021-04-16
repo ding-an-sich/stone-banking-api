@@ -1,4 +1,4 @@
-defmodule StoneBankingAPI.UsersControllerTest do
+defmodule StoneBankingAPIWeb.UsersControllerTest do
   @moduledoc """
   Tests for the UsersController
   """
@@ -22,7 +22,7 @@ defmodule StoneBankingAPI.UsersControllerTest do
              |> json_response(400) == %{"errors" => %{"email" => ["has invalid format"]}}
     end
 
-    test "creates an user when given valid input", ctx do
+    test "responds with 201 when an user is created", ctx do
       input = %{"name" => "Joe", "email" => "jor@erlang.com"}
 
       resp = ctx.conn |> post("/api/users", input) |> json_response(201)

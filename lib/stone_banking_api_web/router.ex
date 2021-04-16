@@ -10,7 +10,7 @@ defmodule StoneBankingAPIWeb.Router do
 
     post "/users", UsersController, :create
 
-    post "/accounts/transfer", AccountsController, :transfer
+    post "/accounts/transfer", AccountsController, :update
     post "/accounts/withdrawn", AccountsController, :update
   end
 end

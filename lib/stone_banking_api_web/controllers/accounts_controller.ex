@@ -6,13 +6,16 @@ defmodule StoneBankingAPIWeb.AccountsController do
   alias StoneBankingAPI.Accounts.Transfers
   alias StoneBankingAPI.Accounts.BankingAccounts
 
-  def update(conn, %{account_id: _, value: _} = params) do
+  def update(
+        %Plug.Conn{path_info: ["api", "accounts", "transfer"]} = conn,
+        %{"from_id" => _, "to_id" => _, "value" => _} = params
+      ) do
     with {:ok, %BankingTransfer{} = input} <-
            InputValidation.cast_and_apply(params, BankingTransfer),
          {:ok, from_account, to_account} <- Transfers.banking_transfer(input) do
       conn
       |> put_status(:ok)
-      |> render("create.json", from_account: from_account, to_account: to_account)
+      |> render("update.json", from_account: from_account, to_account: to_account)
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
@@ -28,7 +31,10 @@ defmodule StoneBankingAPIWeb.AccountsController do
     end
   end
 
-  def update(conn, %{from_id: _, to_id: _, value: _} = params) do
+  def update(
+        %Plug.Conn{path_info: ["api", "accounts", "withdrawn"]} = conn,
+        %{"account_id" => _, "value" => _} = params
+      ) do
     with {:ok, %Withdrawn{} = input} <- InputValidation.cast_and_apply(params, Withdrawn),
          {:ok, account} <- BankingAccounts.withdrawn(input) do
       conn
@@ -46,6 +52,12 @@ defmodule StoneBankingAPIWeb.AccountsController do
         |> put_status(:not_found)
         |> put_view(StoneBankingAPIWeb.ErrorView)
         |> render("404.json")
+
+      {:error, type} when is_atom(type) ->
+        conn
+        |> put_status(:bad_request)
+        |> put_view(StoneBankingAPIWeb.ErrorView)
+        |> render("400.json", type: type)
     end
   end
 end

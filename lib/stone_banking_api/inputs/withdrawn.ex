@@ -10,7 +10,7 @@ defmodule StoneBankingAPI.Inputs.Withdrawn do
 
   @primary_key false
   embedded_schema do
-    field :account_id, :binary_id
+    field :account_id, Ecto.UUID
     field :value, :integer
   end
 

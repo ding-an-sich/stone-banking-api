@@ -10,8 +10,8 @@ defmodule StoneBankingAPI.Inputs.BankingTransfer do
 
   @primary_key false
   embedded_schema do
-    field :from_id, :binary_id
-    field :to_id, :binary_id
+    field :from_id, Ecto.UUID
+    field :to_id, Ecto.UUID
     field :value, :integer
   end
 
