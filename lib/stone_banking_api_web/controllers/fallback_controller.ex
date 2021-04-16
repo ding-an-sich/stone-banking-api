@@ -8,6 +8,13 @@ defmodule StoneBankingAPIWeb.FallbackController do
     |> render("400.json", changeset: changeset)
   end
 
+  def call(conn, {:error, :balance_must_be_positive}) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(StoneBankingAPIWeb.ErrorView)
+    |> render("400.json", type: :balance_must_be_positive)
+  end
+
   def call(conn, {:error, type}) when is_atom(type) do
     conn
     |> put_status(type)

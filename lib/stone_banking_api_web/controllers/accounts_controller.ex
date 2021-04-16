@@ -1,10 +1,10 @@
 defmodule StoneBankingAPIWeb.AccountsController do
   use StoneBankingAPIWeb, :controller
   alias StoneBankingAPIWeb.InputValidation
-  alias StoneBankingAPI.Inputs.BankingTransfer
-  alias StoneBankingAPI.Inputs.Withdrawn
-  alias StoneBankingAPI.Accounts.Transfers
-  alias StoneBankingAPI.Accounts.BankingAccounts
+  alias StoneBankingAPI.Inputs.{BankingTransfer, Withdrawn}
+  alias StoneBankingAPI.Accounts.{BankingAccounts, Transfers}
+
+  action_fallback StoneBankingAPIWeb.FallbackController
 
   def update(
         %Plug.Conn{path_info: ["api", "accounts", "transfer"]} = conn,
@@ -16,18 +16,6 @@ defmodule StoneBankingAPIWeb.AccountsController do
       conn
       |> put_status(:ok)
       |> render("update.json", from_account: from_account, to_account: to_account)
-    else
-      {:error, %Ecto.Changeset{} = changeset} ->
-        conn
-        |> put_status(:bad_request)
-        |> put_view(StoneBankingAPIWeb.ErrorView)
-        |> render("400.json", changeset: changeset)
-
-      {:error, :not_found} ->
-        conn
-        |> put_status(:not_found)
-        |> put_view(StoneBankingAPIWeb.ErrorView)
-        |> render("404.json")
     end
   end
 
@@ -40,24 +28,6 @@ defmodule StoneBankingAPIWeb.AccountsController do
       conn
       |> put_status(:ok)
       |> render("update.json", account: account)
-    else
-      {:error, %Ecto.Changeset{} = changeset} ->
-        conn
-        |> put_status(:bad_request)
-        |> put_view(StoneBankingAPIWeb.ErrorView)
-        |> render("400.json", changeset: changeset)
-
-      {:error, :not_found} ->
-        conn
-        |> put_status(:not_found)
-        |> put_view(StoneBankingAPIWeb.ErrorView)
-        |> render("404.json")
-
-      {:error, type} when is_atom(type) ->
-        conn
-        |> put_status(:bad_request)
-        |> put_view(StoneBankingAPIWeb.ErrorView)
-        |> render("400.json", type: type)
     end
   end
 end
