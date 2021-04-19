@@ -19,8 +19,11 @@ defmodule StoneBankingAPI.Accounts.LedgerAccount do
         do_update(repo, account, value, type)
       end
     )
-    |> Multi.run(:log_burn, fn _, %{get_ledger_account: account} ->
-      Log.insert(%{account_id: account.id, value: -value, type: type})
+    |> Multi.run(:log, fn _, %{get_ledger_account: account} ->
+      case type do
+        :burn -> Log.insert(%{account_id: account.id, value: -value, type: type})
+        :mint -> Log.insert(%{account_id: account.id, value: value, type: type})
+      end
     end)
   end
 
