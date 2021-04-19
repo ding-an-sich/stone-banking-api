@@ -12,4 +12,25 @@ defmodule Transactions.Schemas.Transaction do
       be logged as a deposit of funds described above
   """
   use Ecto.Schema
+
+  import Ecto.Changeset
+
+  alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+
+  @foreign_key_type :binary_id
+  schema "transactions" do
+    field :value, :integer
+    field :type, Ecto.Enum, values: [:interop, :burn, :mint]
+
+    belongs_to :account, BankingAccount
+
+    timestamps()
+  end
+
+  def changeset(struct \\ %__MODULE__{}, params) do
+    struct
+    |> cast(params, [:value, :type, :account])
+    |> validate_required(:value)
+    |> validate_number(:value, greater_than_or_equal_to: 1)
+  end
 end
