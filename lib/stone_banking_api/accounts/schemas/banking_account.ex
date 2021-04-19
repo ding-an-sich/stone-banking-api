@@ -7,6 +7,7 @@ defmodule StoneBankingAPI.Accounts.Schemas.BankingAccount do
   import Ecto.Changeset
 
   alias StoneBankingAPI.Profiles.Schemas.User
+  alias StonebankingAPI.Transactions.Schemas.Transaction
 
   @required_fields [:balance, :user_id]
 
@@ -16,6 +17,8 @@ defmodule StoneBankingAPI.Accounts.Schemas.BankingAccount do
     field :balance, :integer, default: 100_000
 
     belongs_to :user, User
+
+    has_many :transactions, Transaction, foreign_key: :account_id
 
     timestamps()
   end

@@ -1,4 +1,4 @@
-defmodule Transactions.Schemas.Transaction do
+defmodule StonebankingAPI.Transactions.Schemas.Transaction do
   @moduledoc """
   Represents a transaction in the system, for internal accounting purposes.
   Every transaction is logged twice, according to the following rules:
@@ -29,8 +29,7 @@ defmodule Transactions.Schemas.Transaction do
 
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, [:value, :type, :account])
+    |> cast(params, [:value, :type, :account_id])
     |> validate_required(:value)
-    |> validate_number(:value, greater_than_or_equal_to: 1)
   end
 end

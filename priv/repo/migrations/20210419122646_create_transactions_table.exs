@@ -11,7 +11,6 @@ defmodule StoneBankingAPI.Repo.Migrations.CreateTransactionsTable do
       timestamps()
     end
 
-    create constraint(:transactions, :value_must_be_positive, check: "value > 0")
     create index(:transactions, [:account_id])
   end
 end
