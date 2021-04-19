@@ -3,7 +3,7 @@ defmodule StoneBankingAPI.Transactions.Log do
   Functions for logging transactions to the database.
   """
   alias StoneBankingAPI.Repo
-  alias StonebankingAPI.Transactions.Schemas.Transaction
+  alias StoneBankingAPI.Transactions.Schemas.Transaction
 
   @spec insert(map()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def insert(params) do

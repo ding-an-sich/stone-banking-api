@@ -5,10 +5,12 @@ defmodule StoneBankingAPI.Accounts.BankingAccounts do
   import Ecto.Query, only: [from: 2]
 
   alias Ecto.Multi
+  alias StoneBankingAPI.Accounts.LedgerAccount
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
   alias StoneBankingAPI.Inputs.Withdrawn
   alias StoneBankingAPI.Notify.Email
   alias StoneBankingAPI.Repo
+  alias StoneBankingAPI.Transactions.Log
 
   def withdrawn(%Withdrawn{account_id: id, value: value}) do
     Multi.new()
@@ -22,6 +24,12 @@ defmodule StoneBankingAPI.Accounts.BankingAccounts do
       end,
       []
     )
+    |> Multi.run(:log_withdrawn, fn _repo, %{do_withdrawn: {_, [account]}} ->
+      Log.insert(%{value: -value, account_id: account.id, type: :burn})
+    end)
+    |> Multi.merge(fn _ ->
+      LedgerAccount.update(value, :mint)
+    end)
     |> Repo.transaction()
     |> handle_multi()
   rescue

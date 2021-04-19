@@ -4,7 +4,18 @@ defmodule StoneBankingAPIWeb.UsersControllerTest do
   """
   use StoneBankingAPIWeb.ConnCase, async: true
 
+  alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Profiles.Schemas.User
+  alias StoneBankingAPI.Repo
+
   describe "POST /api/users" do
+    setup do
+      admin = Repo.insert!(%User{name: "admin", email: "admin@stonebanking.com.br"})
+      Repo.insert!(%BankingAccount{balance: 0, type: :admin, user_id: admin.id})
+
+      :ok
+    end
+
     test "fails with 400 when name is too small", ctx do
       input = %{"name" => "Z", "email" => "z@z.com"}
 

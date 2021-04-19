@@ -7,12 +7,16 @@ defmodule StoneBankingAPI.AccountsWithdrawnTest do
   alias StoneBankingAPI.Accounts.BankingAccounts
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
   alias StoneBankingAPI.Inputs.Withdrawn
+  alias StoneBankingAPI.Profiles.Schemas.User
   alias StoneBankingAPI.Profiles.Users
 
   import ExUnit.CaptureLog
 
   # Accounts are created automatically with an user, so we setup one here.
+  # We also setup the ledger account.
   setup do
+    admin = Repo.insert!(%User{name: "admin", email: "admin@stonebanking.com.br"})
+    Repo.insert!(%BankingAccount{balance: 0, type: :admin, user_id: admin.id})
     input = %{name: "Joe", email: "joe@erlang.com"}
     {:ok, user} = Users.create(input)
     account = Repo.get_by(BankingAccount, user_id: user.id)

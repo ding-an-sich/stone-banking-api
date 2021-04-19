@@ -1,4 +1,4 @@
-defmodule StonebankingAPI.Transactions.Schemas.Transaction do
+defmodule StoneBankingAPI.Transactions.Schemas.Transaction do
   @moduledoc """
   Represents a transaction in the system, for internal accounting purposes.
   Every transaction is logged twice, according to the following rules:
@@ -17,7 +17,7 @@ defmodule StonebankingAPI.Transactions.Schemas.Transaction do
 
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
 
-  @foreign_key_type :binary_id
+  @foreign_key_type Ecto.UUID
   schema "transactions" do
     field :value, :integer
     field :type, Ecto.Enum, values: [:interop, :burn, :mint]

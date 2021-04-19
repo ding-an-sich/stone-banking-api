@@ -2,8 +2,11 @@ defmodule StoneBankingAPIWeb.AccountsControllerTest do
   @moduledoc """
   Tests for the AccountsController
   """
+  import Ecto.Query
+
   use StoneBankingAPIWeb.ConnCase, async: true
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Profiles.Schemas.User
   alias StoneBankingAPI.Profiles.Users
   alias StoneBankingAPI.Repo
 
@@ -37,8 +40,11 @@ defmodule StoneBankingAPIWeb.AccountsControllerTest do
 
   describe "POST /api/accounts/withdrawn -- Data" do
     setup do
+      admin = Repo.insert!(%User{name: "admin", email: "admin@stonebanking.com.br"})
+      Repo.insert!(%BankingAccount{balance: 0, type: :admin, user_id: admin.id})
       {:ok, _} = Users.create(%{name: "Joe", email: "joe@erlang.com"})
-      [accounts: Repo.all(BankingAccount)]
+      query = from a in BankingAccount, where: a.type == :customer
+      [accounts: Repo.all(query)]
     end
 
     test "fails with 400 when trying to overwithdrawn from an existing account",
@@ -118,9 +124,12 @@ defmodule StoneBankingAPIWeb.AccountsControllerTest do
 
   describe "POST /api/accounts/transfer -- Data" do
     setup do
+      admin = Repo.insert!(%User{name: "admin", email: "admin@stonebanking.com.br"})
+      Repo.insert!(%BankingAccount{balance: 0, type: :admin, user_id: admin.id})
       {:ok, _} = Users.create(%{name: "Joe", email: "joe@erlang.com"})
       {:ok, _} = Users.create(%{name: "Wittgenstein", email: "sheffer@stroke.com"})
-      [accounts: Repo.all(BankingAccount)]
+      query = from a in BankingAccount, where: a.type == :customer
+      [accounts: Repo.all(query)]
     end
 
     test "fails with 400 when trying to transfer from an account with insufficient funds",
@@ -134,7 +143,7 @@ defmodule StoneBankingAPIWeb.AccountsControllerTest do
       assert ctx.conn
              |> post("/api/accounts/transfer", input)
              |> json_response(400) ==
-               %{"errors" => %{"balance" => ["must be greater than or equal to 0"]}}
+               %{"errors" => %{"balance" => ["Insufficient funds"]}}
     end
 
     test "responds with 200 when transfering funds between accounts",

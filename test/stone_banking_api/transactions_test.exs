@@ -4,11 +4,14 @@ defmodule StoneBankingAPI.TransactionsTest do
   """
   use StoneBankingAPI.DataCase
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Profiles.Schemas.User
   alias StoneBankingAPI.Profiles.Users
   alias StoneBankingAPI.Transactions.Log
 
   describe "Log.insert/1" do
     setup do
+      admin = Repo.insert!(%User{name: "admin", email: "admin@stonebanking.com.br"})
+      Repo.insert!(%BankingAccount{balance: 0, type: :admin, user_id: admin.id})
       input = %{name: "Joe", email: "joe@erlang.com"}
       {:ok, user} = Users.create(input)
       account = Repo.get_by(BankingAccount, user_id: user.id)
