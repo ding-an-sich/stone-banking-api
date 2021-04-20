@@ -20,14 +20,24 @@ defmodule StoneBankingAPI.AccountsWithdrawnTest do
     input = %{name: "Joe", email: "joe@erlang.com"}
     {:ok, user} = Users.create(input)
     account = Repo.get_by(BankingAccount, user_id: user.id)
-    [account_id: account.id, user_email: user.email]
+    admin_account = Repo.one(from a in BankingAccount, where: a.type == :admin)
+
+    [
+      account_id: account.id,
+      user_email: user.email,
+      admin_account_id: admin_account.id,
+      admin_account_balance: admin_account.balance
+    ]
   end
 
   describe "withdrawn/1" do
     @tag capture_log: true
     test "burns money from an account", ctx do
       assert {:ok, account} =
-               BankingAccounts.withdrawn(%Withdrawn{account_id: ctx.account_id, value: 40_000})
+               BankingAccounts.withdrawn(%Withdrawn{
+                 account_id: ctx.account_id,
+                 value: 40_000
+               })
 
       assert account.balance == 60_000
     end
@@ -44,6 +54,25 @@ defmodule StoneBankingAPI.AccountsWithdrawnTest do
       assert capture_log(fn ->
                BankingAccounts.withdrawn(input)
              end) =~ expected_log
+    end
+
+    @tag capture_log: true
+    test "will mint money in the ledger account balance", ctx do
+      value = 40_000
+
+      input = %Withdrawn{
+        account_id: ctx.account_id,
+        value: value
+      }
+
+      {:ok, _} = BankingAccounts.withdrawn(input)
+
+      ledger_account =
+        BankingAccount
+        |> where([a], a.id == ^ctx.admin_account_id)
+        |> Repo.one!()
+
+      assert ledger_account.balance == ctx.admin_account_balance + value
     end
   end
 end

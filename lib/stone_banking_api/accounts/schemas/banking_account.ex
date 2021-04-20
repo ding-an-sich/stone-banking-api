@@ -28,6 +28,9 @@ defmodule StoneBankingAPI.Accounts.Schemas.BankingAccount do
     struct
     |> cast(params, @required_fields)
     |> validate_required(@required_fields)
-    |> check_constraint(:balance, name: :balance_must_be_0_or_more, message: "Insufficient funds")
+    |> check_constraint(:balance,
+      name: :balance_must_be_0_or_more,
+      message: "Insufficient funds"
+    )
   end
 end
