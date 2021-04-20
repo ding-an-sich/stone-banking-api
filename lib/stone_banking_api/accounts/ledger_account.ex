@@ -6,6 +6,7 @@ defmodule StoneBankingAPI.Accounts.LedgerAccount do
 
   alias Ecto.Multi
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
+  alias StoneBankingAPI.Repo
   alias StoneBankingAPI.Transactions.Log
 
   def update(value, type) do
@@ -25,6 +26,26 @@ defmodule StoneBankingAPI.Accounts.LedgerAccount do
         :mint -> Log.insert(%{account_id: account.id, value: value, type: type})
       end
     end)
+  end
+
+  @doc """
+  Checks if all customer assets are properly accounted for in the ledger account balance.
+  If this returns false, then somewhere the system lost track of an operation OR the ledger
+  account balance was updated during the check. This is a naive implementation that does not
+  properly handle concurrency issues.
+  """
+  def balance_checks? do
+    customer_assets =
+      BankingAccount
+      |> where([a], a.type == :customer)
+      |> Repo.aggregate(:sum, :balance)
+
+    ledger_account =
+      BankingAccount
+      |> where([a], a.type == :admin)
+      |> Repo.one()
+
+    ledger_account.balance + customer_assets == 0
   end
 
   defp get_ledger_account(repo) do
