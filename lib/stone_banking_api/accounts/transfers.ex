@@ -8,6 +8,7 @@ defmodule StoneBankingAPI.Accounts.Transfers do
   alias StoneBankingAPI.Accounts.Schemas.BankingAccount
   alias StoneBankingAPI.Inputs.BankingTransfer
   alias StoneBankingAPI.Repo
+  alias StoneBankingAPI.Transactions.Log
 
   @spec banking_transfer(BankingTransfer.t()) ::
           {:ok, BankingAccount.t(), BankingAccount.t()} | {:error, Ecto.Changeset.t()}
@@ -24,6 +25,12 @@ defmodule StoneBankingAPI.Accounts.Transfers do
     end)
     |> Multi.run(:do_deposit, fn repo, %{get_to_account: to_account} ->
       do_operation(repo, to_account, value, :deposit)
+    end)
+    |> Multi.run(:log_withdrawn, fn _repo, %{do_withdrawn: from_account} ->
+      Log.insert(%{value: -value, account_id: from_account.id, type: :interop})
+    end)
+    |> Multi.run(:log_deposit, fn _repo, %{do_deposit: to_account} ->
+      Log.insert(%{value: value, account_id: to_account.id, type: :interop})
     end)
     |> Repo.transaction()
     |> handle_multi()
